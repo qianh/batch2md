@@ -24,6 +24,9 @@ classifiers = [
 
 dependencies = [
     "mineru>=2.0.0",
+    "numpy<2",
+    "doclayout-yolo>=0.0.1",
+    "ultralytics>=8.3.0",
 ]
 
 [project.optional-dependencies]

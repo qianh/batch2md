@@ -1,9 +1,10 @@
 """Document conversion functions."""
 
+import os
 import subprocess
 import shutil
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 
 def check_libreoffice() -> bool:
@@ -121,10 +122,39 @@ def convert_to_pdf(doc_path: Path, output_dir: Path) -> Path:
     return pdf_path
 
 
+def _map_backend(backend: str) -> str:
+    """Map legacy backend names to MinerU's current CLI values."""
+
+    backend_map: Dict[str, str] = {
+        "pipeline": "pipeline",
+        "vlm": "vlm-transformers",
+        "vlm-transformers": "vlm-transformers",
+        "vllm": "vlm-vllm-engine",
+        "vlm-vllm-engine": "vlm-vllm-engine",
+        "vlm-http-client": "vlm-http-client",
+    }
+    return backend_map.get(backend, backend)
+
+
+def _ensure_backend_dependencies(mapped_backend: str) -> None:
+    """Ensure optional dependencies required by a backend are present."""
+
+    if mapped_backend in {"pipeline", "vlm-transformers", "vlm-vllm-engine"}:
+        try:
+            import torch  # type: ignore
+        except ImportError as exc:
+            raise RuntimeError(
+                "MinerU backend '{backend}' requires PyTorch. Install it first, e.g.\n"
+                "  pip install torch --index-url https://download.pytorch.org/whl/cpu\n"
+                "or switch to a different MinerU backend via --backend"
+            .format(backend=mapped_backend)) from exc
+
+
 def convert_to_markdown(
     pdf_path: Path,
     output_md_path: Path,
-    backend: str = "pipeline"
+    backend: str = "pipeline",
+    timeout: int = 300
 ) -> Tuple[Path, Path]:
     """
     Convert PDF to Markdown using MinerU.
@@ -133,6 +163,7 @@ def convert_to_markdown(
         pdf_path: Path to PDF file
         output_md_path: Full path where Markdown file should be saved
         backend: MinerU backend to use (pipeline, vlm, or vllm)
+        timeout: Seconds to wait for MinerU before aborting
 
     Returns:
         Tuple of (markdown_file_path, mineru_temp_directory)
@@ -159,18 +190,26 @@ def convert_to_markdown(
 
     try:
         # Run MinerU conversion to temporary directory
+        mapped_backend = _map_backend(backend)
+        _ensure_backend_dependencies(mapped_backend)
+        env = os.environ.copy()
+        env.setdefault("MINERU_DEVICE_MODE", "cpu")
+
         result = subprocess.run(
             [
                 "mineru",
-                "pdf",
+                "-p",
                 str(pdf_path),
-                "-o", str(temp_output_dir),
-                "--backend", backend
+                "-o",
+                str(temp_output_dir),
+                "--backend",
+                mapped_backend,
             ],
             capture_output=True,
             text=True,
-            timeout=300,
-            check=True
+            timeout=timeout,
+            check=True,
+            env=env,
         )
 
         # MinerU creates output in a subdirectory structure
@@ -195,7 +234,18 @@ def convert_to_markdown(
                 found_md = md_files[0]
 
         if not found_md:
-            raise RuntimeError(f"Markdown output not created for {pdf_path.name}")
+            details = []
+            if result.stdout:
+                details.append(result.stdout.strip())
+            if result.stderr:
+                details.append(result.stderr.strip())
+            detail_msg = "\n".join([d for d in details if d])
+            raise RuntimeError(
+                "Markdown output not created for {name}{extra}".format(
+                    name=pdf_path.name,
+                    extra=f"\nMinerU output:\n{detail_msg}" if detail_msg else ""
+                )
+            )
 
         # Move to the requested output path (respecting timestamp suffix if present)
         shutil.move(str(found_md), str(output_md_path))

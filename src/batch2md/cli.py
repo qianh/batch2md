@@ -23,6 +23,18 @@ from .output_manager import (
 )
 
 
+def _positive_int(value: str) -> int:
+    """Argparse helper to ensure integer arguments are positive."""
+    try:
+        ivalue = int(value)
+    except ValueError as exc:  # pragma: no cover - handled by argparse
+        raise argparse.ArgumentTypeError("Must be an integer") from exc
+
+    if ivalue <= 0:
+        raise argparse.ArgumentTypeError("Must be a positive integer")
+    return ivalue
+
+
 def parse_args() -> ConversionConfig:
     """
     Parse command-line arguments.
@@ -74,6 +86,14 @@ def parse_args() -> ConversionConfig:
     )
 
     parser.add_argument(
+        "--mineru-timeout",
+        type=_positive_int,
+        default=300,
+        metavar="SECONDS",
+        help="Seconds to wait for MinerU before failing (default: 300)"
+    )
+
+    parser.add_argument(
         "--json",
         action="store_true",
         dest="json_output",
@@ -105,6 +125,7 @@ def parse_args() -> ConversionConfig:
         overwrite=args.overwrite,
         dry_run=args.dry_run,
         mineru_backend=args.backend,
+        mineru_timeout=args.mineru_timeout,
         verbose=args.verbose,
         json_output=args.json_output
     )
@@ -247,7 +268,8 @@ def run_conversion(config: ConversionConfig) -> ConversionSummary:
             md_path, mineru_temp_dir = convert_to_markdown(
                 job.pdf_path,
                 output_path,  # Pass full path with potential timestamp suffix
-                config.mineru_backend
+                config.mineru_backend,
+                config.mineru_timeout
             )
 
             # Step 3: Extract images and update references

@@ -151,6 +151,41 @@ def test_cli_backend_option(temp_dir):
 
 
 @pytest.mark.unit
+def test_cli_mineru_timeout_default(temp_dir):
+    """CLI should default MinerU timeout to 300 seconds."""
+    from batch2md.cli import parse_args
+
+    import sys
+    old_argv = sys.argv
+    try:
+        sys.argv = ["batch2md", str(temp_dir)]
+        config = parse_args()
+        assert config.mineru_timeout == 300
+    finally:
+        sys.argv = old_argv
+
+
+@pytest.mark.unit
+def test_cli_mineru_timeout_option(temp_dir):
+    """Test --mineru-timeout flag overrides the default."""
+    from batch2md.cli import parse_args
+
+    import sys
+    old_argv = sys.argv
+    try:
+        sys.argv = [
+            "batch2md",
+            str(temp_dir),
+            "--mineru-timeout",
+            "600"
+        ]
+        config = parse_args()
+        assert config.mineru_timeout == 600
+    finally:
+        sys.argv = old_argv
+
+
+@pytest.mark.unit
 def test_cli_json_output_flag(temp_dir):
     """Test --json flag enables JSON output."""
     from batch2md.cli import parse_args

@@ -41,6 +41,26 @@ Convert document collections (DOCX, PPTX, XLSX, etc.) to Markdown via PDF using 
    mineru download
    ```
 
+4. **PyTorch** (MinerU pipeline backend requirement)
+   ```bash
+   pip install torch --index-url https://download.pytorch.org/whl/cpu
+   ```
+
+5. **NumPy 1.x** (PyTorch wheels currently require NumPy < 2)
+   ```bash
+   pip install "numpy<2"
+   ```
+
+6. **DocLayout-YOLO** (MinerU layout detector)
+   ```bash
+   pip install doclayout-yolo
+   ```
+
+7. **Ultralytics** (YOLOv8 dependency required by MinerU)
+   ```bash
+    pip install ultralytics
+   ```
+
 ### Install batch2md
 
 ```bash
@@ -86,6 +106,7 @@ Options:
   --verbose, -v         Show detailed progress information
   --dry-run             Preview what would be converted without converting
   --backend BACKEND     MinerU backend: pipeline (default), vlm, or vllm
+  --mineru-timeout SEC  Seconds to wait for MinerU before failing (default: 300)
   --json                Output results as JSON
   --help, -h            Show help message
 ```
@@ -107,6 +128,9 @@ batch2md ~/Documents --dry-run
 
 # Use vision-language model backend (better accuracy, slower)
 batch2md ~/Documents --backend vlm
+
+# Allow extra time for large PDFs (10 minutes)
+batch2md ~/Documents --mineru-timeout 600
 ```
 
 ## Output Structure

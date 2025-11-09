@@ -133,6 +133,7 @@ class ConversionConfig:
 
     # MinerU settings
     mineru_backend: str = "pipeline"
+    mineru_timeout: int = 300
 
     # Output
     verbose: bool = False

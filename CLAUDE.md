@@ -104,7 +104,7 @@ uv run mypy src/
    - Skip if input is already PDF
 
 3. PDF→Markdown Converter (converters.py:convert_to_markdown)
-   - Call MinerU CLI: mineru pdf input.pdf -o output_dir --backend pipeline
+   - Call MinerU CLI: mineru -p input.pdf -o output_dir --backend pipeline
    - MinerU creates complex subdirectory structure
    - Code searches multiple possible locations to find generated .md file
    - Move .md to expected output location
@@ -157,7 +157,7 @@ uv run mypy src/
    - `{output_dir}/auto/{pdf_stem}.md`
    - Falls back to recursive search: `output_dir.rglob("*.md")`
 
-2. **Image Handling**: Images are extracted during `mineru pdf` conversion, not as separate step. The `extract_images()` function is actually a post-processing search that:
+2. **Image Handling**: Images are extracted during `mineru -p input.pdf` conversion, not as separate step. The `extract_images()` function is actually a post-processing search that:
    - Scans the entire MinerU output tree
    - Finds all image files
    - Renames and consolidates them
@@ -203,7 +203,7 @@ soffice --headless --convert-to pdf --outdir /tmp /path/to/doc.docx
 ls /tmp/*.pdf
 
 # Check MinerU manually
-mineru pdf /tmp/doc.pdf -o /tmp/output
+mineru -p /tmp/doc.pdf -o /tmp/output
 ls /tmp/output/**/*.md
 ```
 
