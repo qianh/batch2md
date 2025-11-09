@@ -144,9 +144,10 @@ def _ensure_backend_dependencies(mapped_backend: str) -> None:
             import torch  # type: ignore
         except ImportError as exc:
             raise RuntimeError(
-                "MinerU backend '{backend}' requires PyTorch. Install it first, e.g.\n"
-                "  pip install torch --index-url https://download.pytorch.org/whl/cpu\n"
-                "or switch to a different MinerU backend via --backend"
+                "MinerU backend '{backend}' requires PyTorch. Install it first:\n"
+                "  uv sync                    # If using uv (recommended)\n"
+                "  pip install torch          # If using pip\n"
+                "Or switch to a different MinerU backend via --backend"
             .format(backend=mapped_backend)) from exc
 
 
