@@ -174,7 +174,7 @@ async def create_conversion_job(request: ConversionRequest, background_tasks: Ba
         "status": "pending",
         "input_path": str(input_path),
         "output_path": str(output_path),
-        "config": request,
+        "config": request.model_dump(),  # Convert Pydantic model to dict for JSON serialization
         "progress": 0,
         "total_files": 0,
         "completed_files": 0,
@@ -337,10 +337,10 @@ def run_conversion_job(job_id: str):
         config = ConversionConfig(
             input_dir=input_path,
             output_dir=output_path,
-            recursive=config_req.recursive,
-            overwrite=config_req.overwrite,
-            mineru_backend=config_req.backend,
-            mineru_timeout=config_req.timeout,
+            recursive=config_req['recursive'],
+            overwrite=config_req['overwrite'],
+            mineru_backend=config_req['backend'],
+            mineru_timeout=config_req['timeout'],
             verbose=False
         )
 
