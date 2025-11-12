@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime
-from fastapi import FastAPI, UploadFile, File, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, UploadFile, File, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -130,12 +130,13 @@ async def upload_files(files: List[UploadFile] = File(...)):
 
 
 @app.post("/api/convert", response_model=ConversionJobResponse)
-async def create_conversion_job(request: ConversionRequest):
+async def create_conversion_job(request: ConversionRequest, background_tasks: BackgroundTasks):
     """
     Create a new conversion job.
 
     Args:
         request: ConversionRequest with job parameters
+        background_tasks: FastAPI background tasks
 
     Returns:
         ConversionJobResponse with job_id
@@ -187,9 +188,9 @@ async def create_conversion_job(request: ConversionRequest):
 
     print(f"[API] Created job {job_id} with input_path={input_path}, output_path={output_path}")
 
-    # Start conversion in background
-    asyncio.create_task(run_conversion_job(job_id))
-    print(f"[API] Started background task for job {job_id}")
+    # Start conversion in background using FastAPI BackgroundTasks
+    background_tasks.add_task(run_conversion_job, job_id)
+    print(f"[API] Added background task for job {job_id}")
 
     return ConversionJobResponse(
         job_id=job_id,
@@ -307,9 +308,11 @@ async def websocket_progress(websocket: WebSocket, job_id: str):
         pass
 
 
-async def run_conversion_job(job_id: str):
+def run_conversion_job(job_id: str):
     """
     Run a conversion job in the background.
+
+    This is a synchronous function that runs in FastAPI's background tasks.
 
     Args:
         job_id: Job ID
