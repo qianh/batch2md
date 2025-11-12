@@ -141,9 +141,16 @@ async def create_conversion_job(request: ConversionRequest):
 
     # Determine input path
     if request.input_path:
-        input_path = Path(request.input_path)
-        if not input_path.exists():
-            raise HTTPException(status_code=400, detail=f"Input path not found: {request.input_path}")
+        # Check if this is an upload_id (format: upload://uuid)
+        if request.input_path.startswith("upload://"):
+            upload_id = request.input_path.replace("upload://", "")
+            if upload_id not in upload_storage:
+                raise HTTPException(status_code=400, detail=f"Upload ID not found: {upload_id}")
+            input_path = upload_storage[upload_id]
+        else:
+            input_path = Path(request.input_path)
+            if not input_path.exists():
+                raise HTTPException(status_code=400, detail=f"Input path not found: {request.input_path}")
     else:
         raise HTTPException(status_code=400, detail="input_path is required")
 
@@ -151,7 +158,11 @@ async def create_conversion_job(request: ConversionRequest):
     if request.output_path:
         output_path = Path(request.output_path)
     else:
-        output_path = input_path / "markdown"
+        # For uploaded files, create output in temp directory
+        if request.input_path.startswith("upload://"):
+            output_path = Path(tempfile.mkdtemp(prefix=f"batch2md_output_{job_id}_"))
+        else:
+            output_path = input_path / "markdown"
 
     # Create job record
     jobs[job_id] = {

@@ -64,12 +64,8 @@ function App() {
 
         const uploadResponse = await uploadFiles(uploadedFiles);
         setUploadId(uploadResponse.upload_id);
-        conversionInputPath = uploadResponse.upload_id; // Use upload_id as path for now
-
-        // In production, backend should handle upload_id -> path mapping
-        alert('File upload completed! However, path-based conversion is recommended for local files.');
-        setIsConverting(false);
-        return;
+        // Use special prefix to indicate this is an upload_id
+        conversionInputPath = `upload://${uploadResponse.upload_id}`;
       } else {
         // Use provided path
         if (!inputPath) {
