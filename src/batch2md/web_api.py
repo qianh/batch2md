@@ -106,6 +106,7 @@ async def upload_files(files: List[UploadFile] = File(...)):
     """
     upload_id = str(uuid.uuid4())
     upload_dir = Path(tempfile.mkdtemp(prefix=f"batch2md_upload_{upload_id}_"))
+    print(f"[Upload] Created upload directory: {upload_dir}")
 
     uploaded_files = []
     for file in files:
@@ -115,9 +116,11 @@ async def upload_files(files: List[UploadFile] = File(...)):
             content = await file.read()
             f.write(content)
         uploaded_files.append(file.filename)
+        print(f"[Upload] Saved file: {file.filename} ({len(content)} bytes)")
 
     # Store upload directory
     upload_storage[upload_id] = upload_dir
+    print(f"[Upload] Stored upload_id {upload_id} with {len(uploaded_files)} files")
 
     return UploadResponse(
         upload_id=upload_id,
@@ -182,8 +185,11 @@ async def create_conversion_job(request: ConversionRequest):
         "results": []
     }
 
+    print(f"[API] Created job {job_id} with input_path={input_path}, output_path={output_path}")
+
     # Start conversion in background
     asyncio.create_task(run_conversion_job(job_id))
+    print(f"[API] Started background task for job {job_id}")
 
     return ConversionJobResponse(
         job_id=job_id,
@@ -311,12 +317,18 @@ async def run_conversion_job(job_id: str):
     job = jobs[job_id]
 
     try:
+        print(f"[Job {job_id}] Starting conversion job...")
         job["status"] = "running"
 
         # Get configuration
         config_req = job["config"]
         input_path = Path(job["input_path"])
         output_path = Path(job["output_path"])
+
+        print(f"[Job {job_id}] Input path: {input_path}")
+        print(f"[Job {job_id}] Output path: {output_path}")
+        print(f"[Job {job_id}] Input path exists: {input_path.exists()}")
+        print(f"[Job {job_id}] Input path is dir: {input_path.is_dir()}")
 
         # Create config
         config = ConversionConfig(
@@ -331,11 +343,14 @@ async def run_conversion_job(job_id: str):
 
         # Scan for documents
         exclude_dirs = [output_path]
+        print(f"[Job {job_id}] Scanning for documents...")
         documents = scan_documents(input_path, config.recursive, exclude_dirs)
 
         job["total_files"] = len(documents)
+        print(f"[Job {job_id}] Found {len(documents)} documents")
 
         if len(documents) == 0:
+            print(f"[Job {job_id}] No documents found, marking as completed")
             job["status"] = "completed"
             job["end_time"] = datetime.now().isoformat()
             return
@@ -347,6 +362,7 @@ async def run_conversion_job(job_id: str):
         for i, doc_path in enumerate(documents, 1):
             job["current_file"] = doc_path.name
             job["progress"] = int((i / len(documents)) * 100)
+            print(f"[Job {job_id}] Processing file {i}/{len(documents)}: {doc_path.name}")
 
             try:
                 # Resolve output path
@@ -417,11 +433,15 @@ async def run_conversion_job(job_id: str):
                 })
 
         # Job completed
+        print(f"[Job {job_id}] Conversion completed. Success: {completed_count}, Failed: {failed_count}")
         job["status"] = "completed"
         job["end_time"] = datetime.now().isoformat()
         job["progress"] = 100
 
     except Exception as e:
+        print(f"[Job {job_id}] ERROR: Job failed with exception: {e}")
+        import traceback
+        traceback.print_exc()
         job["status"] = "failed"
         job["error"] = str(e)
         job["end_time"] = datetime.now().isoformat()
