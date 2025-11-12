@@ -46,9 +46,16 @@ dev = [
     "flake8>=5.0.0",
     "mypy>=0.990",
 ]
+web = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+    "websockets>=12.0",
+]
 
 [project.scripts]
 batch2md = "batch2md.main:main"
+batch2md-web = "batch2md.web_api:main"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/batch2md"

@@ -52,3 +52,10 @@ markdown/
 temp_pdfs/
 *.pdf
 *.md.tmp
+
+# Web interface
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+logs/
+*.log

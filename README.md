@@ -6,12 +6,13 @@ Convert document collections (DOCX, PPTX, XLSX, etc.) to Markdown via PDF using 
 
 - 📄 **Multi-format support**: DOCX, PPTX, XLSX, ODT, ODP, ODS, RTF, PDF
 - 🔄 **Batch processing**: Convert entire directories with one command
+- 🌐 **Web Interface**: User-friendly React-based UI with drag-and-drop file upload
 - 📁 **Recursive scanning**: Process nested folder structures
 - 🖼️ **Image extraction**: Extract and reference images from documents
 - 📊 **Table preservation**: Convert tables to Markdown format
 - ⚡ **High-quality conversion**: Uses MinerU for superior PDF-to-Markdown conversion
 - 🛡️ **Error handling**: Continues processing even if individual files fail
-- 📈 **Progress reporting**: Real-time conversion status
+- 📈 **Progress reporting**: Real-time conversion status with WebSocket updates
 
 ## Installation
 
@@ -86,7 +87,47 @@ pip install batch2md
 
 ## Usage
 
-### Basic Usage
+### Web Interface (Recommended for beginners)
+
+The easiest way to use batch2md is through the web interface:
+
+```bash
+# Start both backend API and frontend web UI
+./scripts/start-web.sh    # Linux/macOS
+# or
+scripts\start-web.bat     # Windows
+
+# Then open your browser to: http://localhost:5173
+```
+
+**Web Interface Features:**
+- 🖱️ **Drag-and-drop file upload** or browse to select files
+- 📂 **Folder path input** for batch processing local directories
+- ⚙️ **Visual configuration** of conversion options
+- 📊 **Real-time progress tracking** with live updates
+- 💾 **One-click download** of converted files as ZIP
+
+**Manual startup:**
+```bash
+# Terminal 1: Start backend API
+uv sync --extra web
+uv run batch2md-web
+# Backend runs on http://localhost:8000
+
+# Terminal 2: Start frontend
+cd frontend
+npm install  # First time only
+npm run dev
+# Frontend runs on http://localhost:5173
+```
+
+See [frontend/README.md](frontend/README.md) for more details about the web interface.
+
+### Command-Line Interface (CLI)
+
+For automation and scripting, use the CLI:
+
+#### Basic Usage
 
 ```bash
 # Convert all documents in a directory
@@ -277,15 +318,24 @@ batch2md/
 ├── src/batch2md/           # Source code
 │   ├── __init__.py
 │   ├── cli.py             # CLI interface
+│   ├── web_api.py         # FastAPI web service
 │   ├── converters.py      # Conversion logic
 │   ├── scanner.py         # Document scanner
 │   ├── models.py          # Data models
 │   └── main.py            # Entry point
+├── frontend/              # React web interface
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── services/      # API client
+│   │   └── types/         # TypeScript types
+│   └── package.json
 ├── tests/                 # Test suite
 │   ├── fixtures/          # Test documents
 │   ├── unit/              # Unit tests
 │   └── integration/       # Integration tests
 └── scripts/               # Utility scripts
+    ├── start-web.sh       # Web interface launcher (Linux/macOS)
+    └── start-web.bat      # Web interface launcher (Windows)
 ```
 
 ## License
