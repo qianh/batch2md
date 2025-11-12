@@ -1,0 +1,282 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+  <diagram id="batch2md-architecture" name="batch2md 技术架构">
+    <mxGraphModel dx="2455" dy="1008" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" background="#ffffff" math="0" shadow="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="batch2md 批量文档转换系统架构" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#1A237E;" parent="1" vertex="1">
+          <mxGeometry x="500" y="30" width="600" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="图例" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#37474F;" parent="1" vertex="1">
+          <mxGeometry x="50" y="90" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-cli" value="CLI 层" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;fontSize=11;fontColor=#424242;" parent="1" vertex="1">
+          <mxGeometry x="50" y="130" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-core" value="核心业务层" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#F57C00;fontSize=11;fontColor=#424242;" parent="1" vertex="1">
+          <mxGeometry x="50" y="170" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-converter" value="转换器层" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;fontSize=11;fontColor=#424242;" parent="1" vertex="1">
+          <mxGeometry x="50" y="210" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-external" value="外部依赖" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#388E3C;fontSize=11;fontColor=#424242;" parent="1" vertex="1">
+          <mxGeometry x="50" y="250" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-data" value="数据模型" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#C2185B;fontSize=11;fontColor=#424242;" parent="1" vertex="1">
+          <mxGeometry x="50" y="290" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cli-layer" value="CLI 交互层" style="swimlane;html=1;startSize=30;fillColor=#E3F2FD;strokeColor=#1976D2;fontSize=14;fontStyle=1;fontColor=#0D47A1;" parent="1" vertex="1">
+          <mxGeometry x="250" y="100" width="280" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="cli-main" value="main.py&lt;br&gt;入口点" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1976D2;fontSize=12;" parent="cli-layer" vertex="1">
+          <mxGeometry x="20" y="50" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cli-parser" value="cli.py&lt;br&gt;参数解析器&lt;br&gt;parse_args()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1976D2;fontSize=12;" parent="cli-layer" vertex="1">
+          <mxGeometry x="150" y="50" width="110" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cli-runner" value="cli.py&lt;br&gt;转换执行器&lt;br&gt;run_conversion()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1976D2;fontSize=12;" parent="cli-layer" vertex="1">
+          <mxGeometry x="85" y="130" width="110" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="model-layer" value="数据模型层" style="swimlane;html=1;startSize=30;fillColor=#FCE4EC;strokeColor=#C2185B;fontSize=14;fontStyle=1;fontColor=#880E4F;" parent="1" vertex="1">
+          <mxGeometry x="580" y="100" width="540" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="model-config" value="ConversionConfig&lt;br&gt;转换配置" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#C2185B;fontSize=11;" parent="model-layer" vertex="1">
+          <mxGeometry x="20" y="50" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="model-job" value="ConversionJob&lt;br&gt;转换任务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#C2185B;fontSize=11;" parent="model-layer" vertex="1">
+          <mxGeometry x="160" y="50" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="model-summary" value="ConversionSummary&lt;br&gt;转换总结" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#C2185B;fontSize=11;" parent="model-layer" vertex="1">
+          <mxGeometry x="300" y="50" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="model-status" value="ConversionStatus&lt;br&gt;状态枚举" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#C2185B;fontSize=11;" parent="model-layer" vertex="1">
+          <mxGeometry x="20" y="120" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="model-format" value="SupportedFormat&lt;br&gt;格式枚举" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8BBD0;strokeColor=#C2185B;fontSize=11;" parent="model-layer" vertex="1">
+          <mxGeometry x="160" y="120" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="core-layer" value="核心业务层" style="swimlane;html=1;startSize=30;fillColor=#FFF3E0;strokeColor=#F57C00;fontSize=14;fontStyle=1;fontColor=#E65100;" parent="1" vertex="1">
+          <mxGeometry x="250" y="360" width="870" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="core-scanner" value="scanner.py&lt;br&gt;文档扫描器&lt;br&gt;&lt;br&gt;scan_documents()&lt;br&gt;• 递归扫描目录&lt;br&gt;• 过滤支持格式&lt;br&gt;• 排除输出目录" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#F57C00;fontSize=11;align=left;spacingLeft=5;" parent="core-layer" vertex="1">
+          <mxGeometry x="30" y="50" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="core-output" value="output_manager.py&lt;br&gt;输出管理器&lt;br&gt;&lt;br&gt;resolve_output_path()&lt;br&gt;create_output_directories()&lt;br&gt;get_images_dir()&lt;br&gt;• 镜像目录结构&lt;br&gt;• 冲突处理(时间戳)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#F57C00;fontSize=11;align=left;spacingLeft=5;" parent="core-layer" vertex="1">
+          <mxGeometry x="220" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="core-error" value="错误处理机制&lt;br&gt;&lt;br&gt;• 单文件失败不中断批处理&lt;br&gt;• 异常捕获并记录到 Job.error&lt;br&gt;• 生成详细错误报告&lt;br&gt;• 退出码(0/1/2)表示状态" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#F57C00;fontSize=11;align=left;spacingLeft=5;" parent="core-layer" vertex="1">
+          <mxGeometry x="660" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="core-progress" value="进度跟踪&lt;br&gt;&lt;br&gt;• 实时转换状态显示&lt;br&gt;• 详细模式(-v)输出&lt;br&gt;• JSON 格式结果导出&lt;br&gt;• 统计成功/失败数量" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#F57C00;fontSize=11;align=left;spacingLeft=5;" parent="core-layer" vertex="1">
+          <mxGeometry x="440" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="converter-layer" value="转换器层" style="swimlane;html=1;startSize=30;fillColor=#F3E5F5;strokeColor=#7B1FA2;fontSize=14;fontStyle=1;fontColor=#4A148C;" parent="1" vertex="1">
+          <mxGeometry x="250" y="600" width="870" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="converter-pdf" value="converters.py&lt;br&gt;文档→PDF 转换器&lt;br&gt;&lt;br&gt;convert_to_pdf()&lt;br&gt;• LibreOffice headless 模式&lt;br&gt;• DOCX/PPTX/XLSX→PDF&lt;br&gt;• PDF 校验(魔数/大小)&lt;br&gt;• 120s 超时控制" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;align=left;spacingLeft=5;" parent="converter-layer" vertex="1">
+          <mxGeometry x="30" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="converter-md" value="converters.py&lt;br&gt;PDF→Markdown 转换器&lt;br&gt;&lt;br&gt;convert_to_markdown()&lt;br&gt;• MinerU CLI 调用&lt;br&gt;• 多种后端支持&lt;br&gt;• 智能搜索输出文件&lt;br&gt;• 300s 超时控制" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;align=left;spacingLeft=5;" parent="converter-layer" vertex="1">
+          <mxGeometry x="250" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="converter-img" value="converters.py&lt;br&gt;图片提取器&lt;br&gt;&lt;br&gt;extract_images()&lt;br&gt;• 扫描 MinerU 输出目录&lt;br&gt;• 重命名图片(语义化)&lt;br&gt;• 更新 Markdown 引用&lt;br&gt;• 集中存储到 images/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;align=left;spacingLeft=5;" parent="converter-layer" vertex="1">
+          <mxGeometry x="470" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="converter-check" value="依赖检查器&lt;br&gt;&lt;br&gt;check_libreoffice()&lt;br&gt;check_mineru()&lt;br&gt;_ensure_backend_dependencies()&lt;br&gt;• PyTorch 依赖验证" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;align=left;spacingLeft=5;" parent="converter-layer" vertex="1">
+          <mxGeometry x="30" y="170" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="converter-backend" value="后端映射器&lt;br&gt;&lt;br&gt;_map_backend()&lt;br&gt;pipeline → pipeline&lt;br&gt;vlm → vlm-transformers&lt;br&gt;vllm → vlm-vllm-engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=11;align=left;spacingLeft=5;" parent="converter-layer" vertex="1">
+          <mxGeometry x="250" y="170" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="external-layer" value="外部依赖层" style="swimlane;html=1;startSize=30;fillColor=#E8F5E9;strokeColor=#388E3C;fontSize=14;fontStyle=1;fontColor=#1B5E20;" parent="1" vertex="1">
+          <mxGeometry x="250" y="900" width="870" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-libreoffice" value="LibreOffice&lt;br&gt;(soffice)&lt;br&gt;&lt;br&gt;文档格式转换引擎&lt;br&gt;• 支持多种 Office 格式&lt;br&gt;• Headless 无头模式&lt;br&gt;• 输出标准 PDF&lt;br&gt;• macOS/Linux 兼容" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontSize=11;align=left;spacingLeft=5;" parent="external-layer" vertex="1">
+          <mxGeometry x="30" y="50" width="170" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-mineru" value="MinerU&lt;br&gt;(mineru)&lt;br&gt;&lt;br&gt;AI 驱动的 PDF 解析&lt;br&gt;• 高质量文本提取&lt;br&gt;• 表格结构识别&lt;br&gt;• 图片自动提取&lt;br&gt;• 多后端支持" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontSize=11;align=left;spacingLeft=5;" parent="external-layer" vertex="1">
+          <mxGeometry x="230" y="50" width="170" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-pytorch" value="PyTorch&lt;br&gt;(torch)&lt;br&gt;&lt;br&gt;深度学习框架&lt;br&gt;• MinerU 后端依赖&lt;br&gt;• CPU/GPU 模式切换&lt;br&gt;• 模型推理引擎&lt;br&gt;• NumPy &amp;lt; 2.0 兼容" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontSize=11;align=left;spacingLeft=5;" parent="external-layer" vertex="1">
+          <mxGeometry x="430" y="50" width="170" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-doclayout" value="DocLayout-YOLO&lt;br&gt;(doclayout-yolo)&lt;br&gt;&lt;br&gt;文档布局检测器&lt;br&gt;• YOLOv8 目标检测&lt;br&gt;• 识别文档结构&lt;br&gt;• 区分段落/表格/图片&lt;br&gt;• MinerU 依赖组件" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontSize=11;align=left;spacingLeft=5;" parent="external-layer" vertex="1">
+          <mxGeometry x="630" y="50" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#1976D2;endArrow=block;endFill=1;" parent="1" source="cli-main" target="cli-parser" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1-label" value="1. 启动" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#1976D2;fontStyle=1;" parent="arrow1" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#1976D2;endArrow=block;endFill=1;" parent="1" source="cli-parser" target="cli-runner" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2-label" value="2. 配置" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#1976D2;fontStyle=1;" parent="arrow2" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+            <mxPoint x="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#F57C00;endArrow=block;endFill=1;" parent="1" source="cli-runner" target="core-scanner" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="340" />
+              <mxPoint x="360" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3-label" value="3. 扫描文档" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#F57C00;fontStyle=1;labelBackgroundColor=#FFFEF7;" parent="arrow3" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="-1" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#F57C00;endArrow=block;endFill=1;" parent="1" source="core-scanner" target="core-output" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow4-label" value="4. 解析路径" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#F57C00;fontStyle=1;" parent="arrow4" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#7B1FA2;endArrow=block;endFill=1;" parent="1" source="core-output" target="converter-pdf" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="580" />
+              <mxPoint x="305" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow5-label" value="5. 转换 PDF" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#7B1FA2;fontStyle=1;labelBackgroundColor=#FFFEF7;" parent="arrow5" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="20" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#7B1FA2;endArrow=block;endFill=1;" parent="1" source="converter-pdf" target="converter-md" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow6-label" value="6. 转换 Markdown" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#7B1FA2;fontStyle=1;" parent="arrow6" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#7B1FA2;endArrow=block;endFill=1;" parent="1" source="converter-md" target="converter-img" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow7-label" value="7. 提取图片" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#7B1FA2;fontStyle=1;" parent="arrow7" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#388E3C;endArrow=block;endFill=1;dashed=1;" parent="1" source="converter-pdf" target="ext-libreoffice" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow8-label" value="调用" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#388E3C;fontStyle=2;" parent="arrow8" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#388E3C;endArrow=block;endFill=1;dashed=1;" parent="1" source="converter-md" target="ext-mineru" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow9-label" value="调用" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#388E3C;fontStyle=2;" parent="arrow9" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#388E3C;endArrow=block;endFill=1;dashed=1;" parent="1" source="ext-mineru" target="ext-pytorch" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow10-label" value="依赖" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#388E3C;fontStyle=2;" parent="arrow10" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1.5;strokeColor=#388E3C;endArrow=block;endFill=1;dashed=1;" parent="1" source="ext-mineru" target="ext-doclayout" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow11-label" value="依赖" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#388E3C;fontStyle=2;" parent="arrow11" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note-pipeline" value="转换流程说明" style="swimlane;html=1;startSize=30;fillColor=#FFFEF7;strokeColor=#9E9E9E;fontSize=13;fontStyle=1;fontColor=#424242;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1180" y="100" width="370" height="450" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step1" value="① CLI 启动：&lt;br&gt;  main.py → parse_args() → ConversionConfig" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="40" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step2" value="② 文档扫描：&lt;br&gt;  递归扫描目录 → 过滤格式 → 返回文档列表" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="85" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step3" value="③ 输出路径解析：&lt;br&gt;  镜像目录结构 → 冲突检测 → 时间戳后缀" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="130" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step4" value="④ PDF 转换(非 PDF 文档)：&lt;br&gt;  LibreOffice headless → 生成 PDF → 校验" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="175" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step5" value="⑤ Markdown 转换：&lt;br&gt;  MinerU CLI → 智能搜索输出 → 移动到目标路径" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="220" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step6" value="⑥ 图片提取：&lt;br&gt;  扫描 MinerU 输出 → 重命名 → 更新引用 → 集中存储" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="265" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step7" value="⑦ 清理临时文件：&lt;br&gt;  删除 MinerU 临时目录 → 删除临时 PDF" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="310" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-step8" value="⑧ 生成总结：&lt;br&gt;  统计成功/失败 → 计算耗时 → 输出报告" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="355" width="340" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="note-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#BDBDBD;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="10" y="395" width="350" height="2" as="geometry" />
+        </mxCell>
+        <mxCell id="note-feature" value="核心特性：批量处理、错误隔离、进度跟踪" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#757575;fontStyle=2;" parent="note-pipeline" vertex="1">
+          <mxGeometry x="15" y="405" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="note-tech" value="技术栈" style="swimlane;html=1;startSize=30;fillColor=#FFFEF7;strokeColor=#9E9E9E;fontSize=13;fontStyle=1;fontColor=#424242;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1180" y="580" width="370" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-backend" value="MinerU 后端选项：" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="40" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-pipeline" value="  • pipeline: CPU 模式,最快(默认)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="65" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-vlm" value="  • vlm: 视觉语言模型,更高准确度" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="85" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-vllm" value="  • vllm: GPU 加速推理" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="105" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-format-title" value="支持格式：" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="140" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-format1" value="  • Office: DOCX, PPTX, XLSX, DOC, PPT, XLS" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="160" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-format2" value="  • OpenDocument: ODT, ODP, ODS" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="180" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-format3" value="  • 其他: PDF, RTF" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#37474F;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="200" width="340" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#BDBDBD;" parent="note-tech" vertex="1">
+          <mxGeometry x="10" y="225" width="350" height="2" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-env" value="Python 3.10+ | uv 包管理 | TDD 测试驱动" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#757575;fontStyle=2;" parent="note-tech" vertex="1">
+          <mxGeometry x="15" y="230" width="340" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="note-output" value="输出目录结构" style="swimlane;html=1;startSize=30;fillColor=#FFFEF7;strokeColor=#9E9E9E;fontSize=13;fontStyle=1;fontColor=#424242;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1180" y="870" width="370" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="output-tree" value="input_dir/&lt;br&gt;├── document.docx&lt;br&gt;├── subdoc/&lt;br&gt;│   └── file.xlsx&lt;br&gt;└── markdown/            ← 输出根目录&lt;br&gt;    ├── document.md&lt;br&gt;    ├── subdoc/          ← 镜像目录结构&lt;br&gt;    │   └── file.md&lt;br&gt;    └── images/          ← 集中图片存储&lt;br&gt;        ├── document_img1.png&lt;br&gt;        └── file_img1.png" style="text;html=1;strokeColor=none;fillColor=#F5F5F5;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;fontFamily=Courier New;fontColor=#212121;spacingLeft=10;spacingTop=5;" parent="note-output" vertex="1">
+          <mxGeometry x="15" y="40" width="340" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="footer" value="batch2md v0.1.0 | 基于 LibreOffice + MinerU 的批量文档转换系统 | MIT License" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#9E9E9E;fontStyle=2;" parent="1" vertex="1">
+          <mxGeometry x="250" y="1140" width="1300" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
